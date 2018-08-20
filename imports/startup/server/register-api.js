@@ -1,6 +1,9 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { getUser } from 'meteor/apollo'
+import merge from 'lodash/merge';
+
 import ResolutionsSchema from '../../api/resolutions/Resolutions.graphql';
+import ResolutionsResolvers from '../../api/resolutions/resolvers';
 
 const testSchema = 	gql`
   type Query {
@@ -18,25 +21,18 @@ const typeDefs = [
 
 // Resolvers define the technique for fetching the types in the
 // schema.  We'll retrieve books from the "books" array above.
-const resolvers = {
+const testResolvers = {
   Query: {
     hi() {
       return 'Hello Level Up';
-    },
-    resolutions() {
-    	return [
-    		{
-    			_id: "sadadadada",
-    			name: "Get stuff done!"
-    		},
-    		{
-    			_id: "ffffff",
-    			name: "Lose some weight!"
-    		}
-    	];
     }
   }
 }
+
+const resolvers = merge(
+	testResolvers,
+	ResolutionsResolvers
+);
 
 const server = new ApolloServer({
   typeDefs,
