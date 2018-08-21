@@ -12,11 +12,26 @@ const httpLink = new HttpLink({
   uri: Meteor.absoluteUrl('graphql')
 });
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
+  },
+  mutate: {
+    errorPolicy: 'all'
+  }
+}
+
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   link: httpLink,
-  cache
+  cache,
+  defaultOptions,
 });
 
 const ApolloApp = () => {
